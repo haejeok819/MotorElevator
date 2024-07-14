@@ -4,6 +4,7 @@ import me.motor.motorelevator.MotorElevator;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,15 +21,22 @@ public class Sneak implements Listener {
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
+        double playerY = player.getLocation().getY();
+        double playerX = player.getLocation().getX();
+        double playerZ = player.getLocation().getZ();
+        float playerYaw = player.getLocation().getYaw();
+        float playerPitch = player.getLocation().getPitch();
+        World playerWorld = player.getWorld();
         if (!player.isSneaking()) {
             return;
         }
         if (event.getPlayer().getLocation().subtract(0, 1, 0).getBlock().getType() == Material.BONE_BLOCK) {
-            for (double y = event.getPlayer().getY()-2; y>-70; y--) {
-                Location checkLoc = new Location(player.getWorld(), player.getX(), y, player.getZ(), player.getYaw(), player.getPitch());
+            for (double y = playerY-2; y>-70; y--) {
+                Location checkLoc = new Location(playerWorld, playerX, y, playerZ, playerYaw, playerPitch);
                 if (checkLoc.getBlock().getType() == Material.BONE_BLOCK) {
                     FileConfiguration messagesConfig = plugin.getMessagesConfig();
-                    player.teleport(checkLoc.add(0, 1, 0));
+                    Location tpLoc = new Location(playerWorld, playerX, y+1, playerZ, playerYaw, playerPitch);
+                    player.teleport(tpLoc);
                     player.playSound(player, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
                     player.sendTitle(messagesConfig.getString("messages.title"), messagesConfig.getString("messages.subtitle"), messagesConfig.getInt("messages.fadein"), messagesConfig.getInt("messages.time"), messagesConfig.getInt("messages.fadeout"));
 
