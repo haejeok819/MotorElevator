@@ -13,6 +13,10 @@ public class MainCommand implements CommandExecutor {
     }
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length == 0){
+            sender.sendMessage("§c/motorelevator reload");
+            return false;
+        }
         if (args[0].equals("reload")) {
             if (sender.hasPermission("motor.elevator.reload")) {
                 plugin.reloadMessagesConfig();
