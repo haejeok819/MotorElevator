@@ -1,0 +1,16 @@
+name: MotorElevator
+version: '${project.version}'
+main: me.motor.motorelevator.MotorElevator
+commands:
+  motorelevator:
+    aliases:
+      - 엘베
+      - elevator
+    description: Reloads the MotorElevator configuration
+    usage: /<command> reload
+    permission: motor.elevator.reload
+
+permissions:
+  motor.elevator.reload:
+    description: Allows the player to reload the MotorElevator Messages
+    default: op
